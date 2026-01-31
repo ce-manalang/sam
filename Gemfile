@@ -42,7 +42,7 @@ end
 
 
 
-gem "devise", "~> 4.9"
+gem "devise", "~> 5.0"
 
 gem "rack-cors", "~> 3.0"
 
