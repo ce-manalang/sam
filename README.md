@@ -1,24 +1,51 @@
-# README
+# Sam Library API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A Rails 8 API-only application for managing a virtual library book catalog. This API supports JWT authentication and provides both public and private book listings.
 
-Things you may want to cover:
+## 🛠 Prerequisites
 
-* Ruby version
+- **Ruby**: 3.3.5
+- **Database**: PostgreSQL
+- **Bundler**: `gem install bundler`
 
-* System dependencies
+## 🚀 Getting Started
 
-* Configuration
+### 1. Clone & Install Dependencies
+```bash
+bundle install
+```
 
-* Database creation
+### 2. Environment Configuration
+Copy the example environment file and update the values (especially the database credentials and JWT secret):
+```bash
+cp .env.example .env
+```
 
-* Database initialization
+### 3. Database Setup
+Ensure PostgreSQL is running, then run:
+```bash
+bin/rails db:prepare
+```
 
-* How to run the test suite
+### 4. Run the Server
+```bash
+bin/rails server
+```
+The API will be available at `http://localhost:3000`.
 
-* Services (job queues, cache servers, search engines, etc.)
+## 🧪 Development Tools
 
-* Deployment instructions
+### Running Tests
+```bash
+bin/rails test
+```
 
-* ...
+### Linting (RuboCop)
+```bash
+bin/rubocop
+```
+
+### Security Scan (Brakeman)
+```bash
+bin/brakeman --no-pager --no-exit-on-warn
+```
