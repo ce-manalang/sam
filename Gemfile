@@ -38,6 +38,14 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem "vcr", "~> 6.2"
+  gem "webmock", "~> 3.19"
+  gem "rspec-rails", "~> 7.1.0"
+
+  gem "pry-rails", "~> 0.3.11"
+  gem "pry-byebug", "~> 3.12"
+  gem "dotenv-rails", "~> 3.1"
 end
 
 
