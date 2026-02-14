@@ -6,11 +6,44 @@ class DatoCmsService
   API_TOKEN = ENV["DATOCMS_API_TOKEN"]
 
   def self.fetch_books
+    Rails.cache.fetch("datocms_all_books", expires_in: 1.hour) do
+      query = <<~GRAPHQL
+        {
+          allBooks {
+            id
+            title
+            author
+          }
+        }
+      GRAPHQL
+
+      execute_query(query).dig("data", "allBooks")
+    end
+  end
+
+  def self.fetch_book(id)
+    Rails.cache.fetch("datocms_book_#{id}", expires_in: 1.hour) do
+      query = <<~GRAPHQL
+        query($id: ItemId) {
+          book(filter: { id: { eq: $id } }) {
+            id
+            title
+            author
+          }
+        }
+      GRAPHQL
+
+      execute_query(query, { id: id }).dig("data", "book")
+    end
+  end
+
+  private
+
+  def self.execute_query(query, variables = {})
     uri = URI(API_URL)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
 
-    # Skip SSL verification in test environment if needed for CRL issues
     if Rails.env.test?
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     end
@@ -20,22 +53,12 @@ class DatoCmsService
     request["Content-Type"] = "application/json"
     request["Accept"] = "application/json"
 
-    query = <<~GRAPHQL
-      {
-        allBooks {
-          id
-          title
-          author
-        }
-      }
-    GRAPHQL
-
-    request.body = { query: query }.to_json
+    request.body = { query: query, variables: variables }.to_json
 
     response = http.request(request)
 
     if response.code == "200"
-      JSON.parse(response.body).dig("data", "allBooks")
+      JSON.parse(response.body)
     else
       raise "DatoCMS API error: #{response.code} - #{response.body}"
     end
