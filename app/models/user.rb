@@ -6,4 +6,5 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
 
   has_many :books
+  has_many :library_books, dependent: :destroy
 end
