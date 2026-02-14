@@ -3,13 +3,22 @@ class BooksController < ApplicationController
   before_action :authenticate_user!, except: [ :index ]
 
   def index
-    @books = Book.where(is_public: true)
-    render json: @books
+    render json: DatoCmsService.fetch_books
   end
 
   def my_catalog
-    # 'current_user' is provided by Devise once you log in
-    @books = current_user.books
-    render json: @books
+    books = current_user.books
+    dato_books = DatoCmsService.fetch_books
+
+    enriched_books = books.map do |book|
+      dato_data = dato_books.find do |db|
+        db["title"].to_s.strip.casecmp?(book.title.to_s.strip) &&
+          db["author"].to_s.strip.casecmp?(book.author.to_s.strip)
+      end
+      # Keep the local database ID but merge other metadata
+      book.as_json.merge(dato_data&.except("id") || {})
+    end
+
+    render json: enriched_books
   end
 end
