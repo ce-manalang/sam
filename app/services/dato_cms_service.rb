@@ -9,10 +9,16 @@ class DatoCmsService
     Rails.cache.fetch("datocms_all_books", expires_in: 1.hour) do
       query = <<~GRAPHQL
         {
-          allBooks {
+          allBooks(first: 100) {
             id
             title
             author
+            isbn
+            description
+            tags
+            cover {
+              url
+            }
           }
         }
       GRAPHQL
@@ -29,6 +35,12 @@ class DatoCmsService
             id
             title
             author
+            isbn
+            description
+            tags
+            cover {
+              url
+            }
           }
         }
       GRAPHQL

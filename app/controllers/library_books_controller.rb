@@ -1,6 +1,19 @@
 class LibraryBooksController < ApplicationController
   before_action :authenticate_user!
 
+  def index
+    library_books = current_user.library_books
+    dato_books = DatoCmsService.fetch_books
+
+    # Enrich library books with DatoCMS data
+    enriched_books = library_books.map do |lb|
+      dato_data = dato_books.find { |db| db["id"] == lb.dato_book_id }
+      lb.as_json.merge(dato_data || {})
+    end
+
+    render json: enriched_books
+  end
+
   def create
     @library_book = current_user.library_books.new(library_book_params)
 

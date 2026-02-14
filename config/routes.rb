@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get "/my_books", to: "books#my_catalog"
 
   resources :books
-  resources :library_books, only: [ :create ]
+  resources :library_books, only: [ :index, :create ]
 
   # Health check
   get "/health", to: ->(env) { [ 200, { "Content-Type" => "application/json" }, [ { status: "ok" }.to_json ] ] }
