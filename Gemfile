@@ -41,7 +41,7 @@ group :development, :test do
 
   gem "vcr", "~> 6.2"
   gem "webmock", "~> 3.19"
-  gem "rspec-rails", "~> 7.1.0"
+  gem "rspec-rails", "~> 8.0.3"
 
   gem "pry-rails", "~> 0.3.11"
   gem "pry-byebug", "~> 3.12"
