@@ -40,7 +40,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   gem "vcr", "~> 6.2"
-  gem "webmock", "~> 3.19"
+  gem "webmock", "~> 3.26"
   gem "rspec-rails", "~> 7.1.0"
 
   gem "pry-rails", "~> 0.3.11"
